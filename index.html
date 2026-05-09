@@ -1,0 +1,116 @@
+<?php
+// Pastikan file ada agar tidak muncul error saat pertama kali dijalankan
+if (!file_exists("gojek.json")) file_put_contents("gojek.json", "");
+if (!file_exists("grab.json")) file_put_contents("grab.json", "");
+
+if (isset($_POST['save'])) {
+    file_put_contents("gojek.json", $_POST['gojek']);
+    file_put_contents("grab.json", $_POST['grab']);
+    $status = true;
+}
+
+$gojek = file_get_contents("gojek.json");
+$grab  = file_get_contents("grab.json");
+?>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token Manager - Resto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f7f6;
+            font-family: 'Inter', sans-serif;
+        }
+        .main-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .btn-save {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 12px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        .btn-save:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #444;
+        }
+        .input-group-text {
+            background-color: #fff;
+            border-right: none;
+        }
+        .form-control {
+            border-left: none;
+        }
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #dee2e6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            
+            <?php if (isset($status)): ?>
+            <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm" role="alert">
+                <strong>Berhasil!</strong> Token telah diperbarui secara lokal.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <?php endif; ?>
+
+            <div class="card main-card p-4">
+                <div class="text-center mb-4">
+                    <h4 class="fw-bold mb-1">Token Manager</h4>
+                    <p class="text-muted small">Update token Gojek & Grab tanpa database</p>
+                </div>
+
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Token Gojek</label>
+                        <div class="input-group">
+                            <span class="input-group-text text-success">
+                                🟢
+                            </span>
+                            <input type="text" name="gojek" class="form-control" placeholder="Masukkan token gojek..." value="<?php echo htmlspecialchars($gojek); ?>">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Token Grab</label>
+                        <div class="input-group">
+                            <span class="input-group-text text-info">
+                                🔵
+                            </span>
+                            <input type="text" name="grab" class="form-control" placeholder="Masukkan token grab..." value="<?php echo htmlspecialchars($grab); ?>">
+                        </div>
+                    </div>
+
+                    <button type="submit" name="save" class="btn btn-primary btn-save w-100 text-white">
+                        SIMPAN PERUBAHAN
+                    </button>
+                </form>
+            </div>
+            
+            <div class="text-center mt-4">
+                <p class="text-muted" style="font-size: 0.8rem;">Sistem File Storage Aktif</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
